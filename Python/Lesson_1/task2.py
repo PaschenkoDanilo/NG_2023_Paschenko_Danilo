@@ -1,5 +1,6 @@
 from math import sqrt
 
+
 print ("Hello! It is calculator")
 print ("Math operators available: +, -, *, /, ^, square root(input: sqrt)")
 mathOperator = input("Input math operator which you want: ")

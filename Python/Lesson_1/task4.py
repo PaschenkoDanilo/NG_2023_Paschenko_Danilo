@@ -8,7 +8,7 @@ constantTerm = int(input("Input constant term: "))
 discriminant = linearCoefficient**2 - 4*quadraticCoefficient*constantTerm
 
 if discriminant < 0:
-    print ("Negative discriminant. Quadratic equation haven't real roots.")
+    print ("Negative discriminant. Quadratic equation hasn't a real roots.")
 elif discriminant == 0:
     root = (-linearCoefficient / 2*quadraticCoefficient)
     print ("Real root = " + str(root))

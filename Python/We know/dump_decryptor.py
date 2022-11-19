@@ -4,23 +4,18 @@ text ="Terrgvatf, arjpbzre! Jr ner tynq gb frr, gung lbh unir fhpprffshyyl cnffr
 upperCase = string.ascii_uppercase
 lowerCase = string.ascii_lowercase
 
-for encreptedLetters in text:
-    if encreptedLetters in upperCase:
-        decryptor = ord(encreptedLetters)
-        if decryptor <= 77:
-            decryptor += 13
-            decryptor = chr(decryptor)
+dictKeys = string.ascii_letters
+dictValues = lowerCase[13:] + lowerCase[:13] + upperCase[13:] + upperCase[:13]
+index = 0
+rot13Dict = {}
+for keys in dictKeys:
+    rot13Dict[keys] = dictValues[index]
+    index +=1
+
+decryptedText =""
+for letters in text:
+        if letters in rot13Dict.keys():
+            decryptedText += rot13Dict.get(letters)   
         else:
-            decryptor -= 13
-            decryptor = chr(decryptor)
-    elif encreptedLetters in lowerCase:
-        decryptor = ord(encreptedLetters)
-        if decryptor >= 110:
-            decryptor -= 13
-            decryptor = chr(decryptor)
-        else:
-            decryptor += 13
-            decryptor = chr(decryptor)
-    else:
-        decryptor = encreptedLetters
-    print (decryptor, end = "")
+            decryptedText += letters
+print (decryptedText)

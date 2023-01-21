@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>News Feed Editor</title>
+    <style>
+        textarea {
+            resize: none; 
+            border-radius: 5px;
+            width: 33%;
+        }
+
+        .textareaTitle {
+            height: 50px;
+        }
+
+        .textareaText {
+            height: 500px;
+        }
+    </style>
+    </head>
+    <body>
+        <form action="/sendDataToIndex">
+            <div>
+                <textarea name="title" class="textareaTitle"></textarea>
+            </div>
+            <div>
+                <textarea name="text" class="textareaText"></textarea>
+            </div>
+            <div>
+                <button>SEND!</button>
+            </div>
+        </form>
+    </body>
+</html>

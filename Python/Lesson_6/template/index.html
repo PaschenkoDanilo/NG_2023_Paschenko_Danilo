@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat</title>
+    </head>
+    <style>
+        textarea {
+            resize: none;
+            border-radius: 5px;
+        }
+
+        #textareaLoginAlign {
+            text-align: center;
+        }
+    </style>
+    <body>
+        <form action="/message">
+            {{loginInput|safe}}
+            <textarea name="message" required></textarea>
+            <button style="position: absolute; margin-top: 10px">SEND!</button>
+        </form>
+        <hr />
+        <div id="chat">
+            {{message|safe}}
+        </div>
+    </body>
+    <script>
+        function refreshThePage() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/refreshThePage", true);
+            xhttp.send();
+        }
+        window.setInterval(() => {
+            refreshThePage();
+        }, 1000);
+    </script>
+</html>

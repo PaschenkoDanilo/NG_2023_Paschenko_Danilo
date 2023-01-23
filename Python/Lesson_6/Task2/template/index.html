@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>PC Information</title>
+        <style>
+            td {
+                padding-right: 5px;
+                padding-bottom: 5px;
+            }
+
+            button {
+                margin-left: 20px;
+                margin-top: 5px;
+            }
+
+            .indent {
+                margin-top: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <form action="/gatheringInformation">
+                <input id="cpu" type="checkbox" name="CPU">
+                <label for="cpu">CPU</label>
+                <br>
+                <input id="cpuArchitecture" type="checkbox" name="CPU Architecture">
+                <label for="cpuArchitecture">CPU Architecture</label>
+                <br>
+                <input id="operatingSystemName" type="checkbox" name="Operating System Name">
+                <label for="operatingSystemName">Operating System Name</label>
+                <br>
+                <input id="operatingSystemInformation" type="checkbox" name="Operating System Information">
+                <label for="operatingSystemInformation">Operating System Information</label>
+                <br>
+                <input id="ramAmount" type="checkbox" name="RAM Amount">
+                <label for="ramAmount">RAM Amount</label>
+                <br>
+                <input id="hostName" type="checkbox" name="Host Name">
+                <label for="hostName">Host Name</label>
+                <br>
+                <input id="systemIPAddress" type="checkbox" name="System IP-Address">
+                <label for="systemIPAddress">System IP-Address</label>
+                <br>
+                <input id="diskAmount" type="checkbox" name="Disk Amount">
+                <label for="diskAmount">Disk Amount</label>
+                <br>
+                <button>SEND!</button>
+            </form>
+        </div>
+        <div class="indent">
+            {{pcInfo|safe}}
+        </div>
+    </body>
+</html>

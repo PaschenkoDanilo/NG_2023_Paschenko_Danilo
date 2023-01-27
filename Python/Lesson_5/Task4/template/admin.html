@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Admin</title>
+    <style>
+        h4 {
+            color: rgba(128, 128, 128, 0.833);
+        }
+
+        h2 {
+            color: rgb(43, 41, 41);
+        }
+
+        a {
+            outline: none;
+            text-decoration: none;
+            display: inline-block;
+            width: 15.5%;
+            margin-right: 0.625%;
+            text-align: center;
+            line-height: 3;
+            color: black;
+        }
+
+        a:link, a:visited, a:focus {
+            background: rgb(180, 173, 173);
+        }
+
+        a:hover {
+            background: rgb(88, 87, 86);
+        }
+
+        a:active {
+            background: rgb(160, 144, 144);
+            color: white;
+        }
+
+        textarea {
+            resize: none;
+            height: 500px;
+            width: 50%;
+            margin-top: 10px;
+        }
+
+        button {
+            width: 100px;
+        }
+    </style>
+    <body>
+        <div>
+            <a href="/editor">Editor</a>
+            <a href="/">User</a>
+        </div>
+        <div>
+            <form action="saveEdits">
+                {{content|safe}}
+            <div>    
+                <button>Save Edits</button>
+            </div>
+            </form>
+            <form action="clearAllNews">
+                <button>Clear All News</button>
+            </form>
+        </div>
+    </body>
+</html>

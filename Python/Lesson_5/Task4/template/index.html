@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>News Feed</title>
+    </head>
+    <style>
+        h4 {
+            color: rgba(128, 128, 128, 0.833);
+        }
+
+        h2 {
+            color: rgb(43, 41, 41);
+        }
+
+        a {
+            outline: none;
+            text-decoration: none;
+            display: inline-block;
+            width: 15.5%;
+            margin-right: 0.625%;
+            text-align: center;
+            line-height: 3;
+            color: black;
+        }
+
+        a:link, a:visited, a:focus {
+            background: rgb(180, 173, 173);
+        }
+
+        a:hover {
+            background: rgb(88, 87, 86);
+        }
+
+        a:active {
+            background: rgb(160, 144, 144);
+            color: white;
+        }
+    </style>
+    <body>
+        <div>
+            <a href="/editor">Editor</a>
+            <a href="/enter">Admin</a>
+        </div>
+        <div>
+            {{content|safe}}
+        </div>
+    </body>
+</html>

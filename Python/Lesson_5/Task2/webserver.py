@@ -3,110 +3,77 @@ from math import sqrt
 
 app = Flask("Calculator", template_folder='template')
 
-numberPrint1 = ""
-numberPrint2 = ""
-numberOne = 0
-numberTwo = 0
-mathOperator = ""
-logical = False
+expression = ""
 
-def main ():
+def expressionResult(result):
+    global expression
+    expression = str(result)
+
+def allInfoAboutExpression(number, mathOperator):
+    global expression
+    expression += number + mathOperator
+
+def fromStrToInt(expression):
+    expressionList = expression.split(" ")
+    numberOne = int(expressionList[0])
+    mathOperator = expressionList[1]
+    if mathOperator == "sqrt":
+        quadraticRoot(numberOne)
+    else:
+        numberTwo = int(expressionList[2])
+        calculatorMain(numberOne, numberTwo, mathOperator)
+
+def calculatorMain(numberOne, numberTwo, mathOperator):
     if mathOperator == "^":
-        exponentation ()
-    elif mathOperator == "sqrt":
-        quadraticRoot ()
-    elif mathOperator == "*" or mathOperator == "/" or mathOperator == "+" or mathOperator == "-": 
-        defaultMathOperation ()
+        exponentation (numberOne, numberTwo)
+    else:
+        defaultMathOperation (numberOne, numberTwo, mathOperator)
 
-def exponentation ():
-    global numberPrint1
-    deleteAllSymbols()
-    numberPrint1 = str(numberOne ** numberTwo)
+def quadraticRoot (numberForSqrt):
+    expression = sqrt(numberForSqrt)
+    return expressionResult(expression)
 
-def quadraticRoot ():
-    global numberPrint1
-    deleteAllSymbols()
-    numberPrint1 = sqrt(numberOne)
+def exponentation (numberForExponentiation, powerOfNumber):
+    expression = numberForExponentiation ** powerOfNumber
+    return expressionResult(expression)
 
-def defaultMathOperation ():
-    global numberPrint1
-    deleteAllSymbols()
+def defaultMathOperation (numberOne, numberTwo, mathOperator):
     if mathOperator == "*":
-        numberPrint1 = numberOne * numberTwo
+        expression = numberOne * numberTwo
     elif mathOperator == "/":
-        numberPrint1 = numberOne / numberTwo
+        expression = numberOne / numberTwo
     elif mathOperator == "+":
-        numberPrint1 = numberOne + numberTwo
+        expression = numberOne + numberTwo
     elif mathOperator == "-":
-        numberPrint1 = numberOne - numberTwo
+        expression = numberOne - numberTwo
+    return expressionResult(expression)
+    
 
 @app.route('/')
 def index():
-    textareaPrint = "<textarea readonly id=\"outputTextarea\">" + str(numberPrint1) + str(numberPrint2) + "</textarea>"
-    return render_template("index.html", contents = textareaPrint)
+    textarea = "<textarea id=\"outputTextarea\" readonly>" + expression + "</textarea>"
+    return render_template("index.html", contents = textarea)
 
-@app.route('/number1')
-def number1():
-    global numberPrint1
-    global numberPrint2
-    if logical == False:
-        numberPrint1 += request.args.get('number1')
-    elif logical == True:
-        numberPrint2 += request.args.get('number1')
+@app.route('/number')
+def numbers():
+    number = request.args.get("number")
+    allInfoAboutExpression(number, "")
     return redirect('/')
 
-@app.route('/number2')
-def number2():
-    global numberPrint1
-    global numberPrint2
-    if logical == False:
-        numberPrint1 += request.args.get('number2')
-    elif logical == True:
-        numberPrint2 += request.args.get('number2')
-    return redirect('/')
-
-@app.route('/number3')
-def number3():
-    global numberPrint1
-    global numberPrint2
-    if logical == False:
-        numberPrint1 += request.args.get('number3')
-    elif logical == True:
-        numberPrint2 += request.args.get('number3')
-    return redirect('/')
-
-@app.route('/deleteAllSymbols')
-def deleteAllSymbols():
-    global numberPrint1
-    global numberPrint2
-    global logical
-    logical = False
-    numberPrint1 = ""
-    numberPrint2 = ""
-    return redirect('/')
-
-@app.route('/mathOperators')
+@app.route('/mathOperator')
 def mathOperators():
-    global numberPrint1
-    global numberOne
-    global mathOperator
-    global logical
-    mathOperator = request.args.get('mathOperator')
-    numberOne = int(numberPrint1)
-    logical = True
-    if mathOperator == "sqrt":   
-        numberPrint1 = "sqrt(" + str(numberOne) + ")"
-    else:
-        numberPrint1 +=  mathOperator
+    mathOperator = " " + request.args.get("mathOperator") + " "
+    allInfoAboutExpression("", mathOperator)
     return redirect('/')
 
 @app.route('/result')
 def result():
-    global numberPrint2
-    global numberTwo
-    if mathOperator != "sqrt":
-        numberTwo = int(numberPrint2)
-    main()
+    fromStrToInt(expression)
+    return redirect('/')
+
+@app.route('/deleteAllSymbols')
+def deleteAllSymbols():
+    expressionResult("")
     return redirect('/')
 
 app.run(host="0.0.0.0", port=8081)

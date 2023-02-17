@@ -18,7 +18,7 @@ indexForRGB = [0, 2, 0, 2]
 
 def encoder():
     index = 0
-    while index <= len(text) - 1:
+    while index < len(text):
         letter = ord(text[index])
         key = randint(0, width - 10), randint(0, height - 10)
         for i in range(0, 4):

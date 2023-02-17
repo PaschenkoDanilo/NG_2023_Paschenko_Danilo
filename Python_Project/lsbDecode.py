@@ -1,43 +1,33 @@
 from PIL import Image, ImageDraw
 from re import findall
 
-img = Image.open("newstart.bmp")
-draw = ImageDraw.Draw(img)
-pix = img.load()
+with Image.open("newstart.bmp") as img:
+    draw = ImageDraw.Draw(img)
+    pix = img.load()
+    keys = open("keys.txt", "r")
 
-keys = open("keys.txt", "r")
-
-imgMask = 0b000000011
+imgMask = 0b00000011
 keysList = list([key for key in keys])
+indexForRGB = [0, 2, 0, 2]
 
 
 
 def decoder():
     text = ""
-    letter = 0
-    for index in range(len(keysList)):
+    index = 0
+    while index < len(keysList):
+        letter = 0
         key = tuple(map(lambda x: int(x), keysList[index].translate(str.maketrans('', '', ',' '(' ')' '\n')).split(" ")))
-        if index % 2 == 0:
-            text += chr(letter)
-            letter = 0
-        if index % 2 == 0:
-            red = pix[key][0] & imgMask
-            red <<= 6
-            letter |= red
-            blue = pix[key][2] & imgMask
-            blue <<= 4
-            letter |= blue
-        else:
-            red = pix[key][0] & imgMask
-            red <<= 2
-            letter |= red
-            blue = pix[key][2] & imgMask
-            letter |= blue
+        for i in range(0, 4):
+            colorCode = pix[key][indexForRGB[i]] & imgMask
+            letter <<= 2
+            letter |= colorCode
+            if i == 1:
+                index += 1
+                key = tuple(map(lambda x: int(x), keysList[index].translate(str.maketrans('', '', ',' '(' ')' '\n')).split(" ")))
+        index += 1
+        text += chr(letter)
     print(text)
     keys.close()
-    img.close()
-            
+
 decoder()
-
-
-

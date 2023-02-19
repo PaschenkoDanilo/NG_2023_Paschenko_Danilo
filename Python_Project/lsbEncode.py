@@ -1,14 +1,15 @@
 from PIL import Image, ImageDraw
 from random import randint
 
-with Image.open("start.bmp") as img:
+def encoderMain(imageFile, userText):
+    img = Image.open(imageFile)
     draw = ImageDraw.Draw(img)
     pix = img.load()
-    width = img.size[0]
-    height = img.size[1]
     keys = open("keys.txt", "w+")
+    text = userText
+    imageName = imageFile.split("/")
+    encoder(img, draw, pix, keys, text, imageName)
 
-text = "rol kek LOL kekich rofls KEKWait"
 
 
 
@@ -16,7 +17,9 @@ imgMask = 0b11111100
 textMask = 0b11000000
 indexForRGB = [0, 2, 0, 2]
 
-def encoder():
+def encoder(img, draw, pix, keys, text, imageName):
+    width = img.size[0]
+    height = img.size[1]
     index = 0
     while index < len(text):
         letter = ord(text[index])
@@ -26,15 +29,15 @@ def encoder():
             letterMask = letter & textMask
             letterMask >>= 6
             colorCode |= letterMask
-            encodeInImage(colorCode, key, i)
+            encodeInImage(colorCode, key, i, draw, pix, keys)
             letter <<= 2
             if i == 1:
                 key = randint(0, width - 10), randint(0, height - 10)
         index += 1
-    img.save("newstart.bmp", "BMP")
+    img.save("new" + editImageName(imageName[len(imageName) - 1]), imageFormat(imageName[len(imageName) - 1]))
     keys.close()
 
-def encodeInImage(colorCode, key, index):
+def encodeInImage(colorCode, key, index, draw, pix, keys):
     if index == 0 or index == 2:
         draw.point(key, (colorCode, pix[key][1], pix[key][2]))
     elif index == 1 or index == 3:
@@ -42,4 +45,16 @@ def encodeInImage(colorCode, key, index):
     if index == 1 or index == 3:
         keys.write(str(key) + "\n")
 
-encoder()
+def imageFormat(imageName):
+    if ".png" in imageName or ".jpg" in imageName or ".jpeg" in imageName:
+        return "PNG"
+    elif ".bmp" in imageName:
+        return "BMP"
+
+def editImageName(imageName):
+    if imageName.split(".")[1] == "jpg" or imageName.split(".")[1] == "jpeg":
+        return imageName.split(".")[0] + ".png"
+    elif imageName.split(".")[1] == "png":
+        return imageName.split(".")[0] + ".png"
+    elif imageName.split(".")[1] == "bmp":
+        return imageName.split(".")[0] + ".bmp"

@@ -1,18 +1,20 @@
 from PIL import Image, ImageDraw
-from re import findall
 
-with Image.open("newstart.bmp") as img:
+def decoderMain(imgFile, keysFile):
+    img = Image.open(imgFile)
     draw = ImageDraw.Draw(img)
     pix = img.load()
-    keys = open("keys.txt", "r")
+    keys = open(keysFile, "r")
+    keysList = list([key for key in keys])
+    return decoder(pix, keys, keysList)
 
 imgMask = 0b00000011
-keysList = list([key for key in keys])
+
+
+
 indexForRGB = [0, 2, 0, 2]
 
-
-
-def decoder():
+def decoder(pix, keys, keysList):
     text = ""
     index = 0
     while index < len(keysList):
@@ -27,7 +29,5 @@ def decoder():
                 key = tuple(map(lambda x: int(x), keysList[index].translate(str.maketrans('', '', ',' '(' ')' '\n')).split(" ")))
         index += 1
         text += chr(letter)
-    print(text)
     keys.close()
-
-decoder()
+    return text

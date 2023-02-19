@@ -2,16 +2,16 @@ from PIL import Image, ImageDraw
 from random import randint
 
 def encoderMain(imageFile, userText):
-    img = Image.open(imageFile)
-    draw = ImageDraw.Draw(img)
-    pix = img.load()
+    try:
+        img = Image.open(imageFile)
+        draw = ImageDraw.Draw(img)
+        pix = img.load()
+    except:
+        return "Chosen image file is not an image"
     keys = open("keys.txt", "w+")
     text = userText
     imageName = imageFile.split("/")
-    encoder(img, draw, pix, keys, text, imageName)
-
-
-
+    return encoder(img, draw, pix, keys, text, imageName)
 
 imgMask = 0b11111100
 textMask = 0b11000000
@@ -36,6 +36,7 @@ def encoder(img, draw, pix, keys, text, imageName):
         index += 1
     img.save("new" + editImageName(imageName[len(imageName) - 1]), imageFormat(imageName[len(imageName) - 1]))
     keys.close()
+    return "Text is encoded\nImage and file with keys are in the program folder"
 
 def encodeInImage(colorCode, key, index, draw, pix, keys):
     if index == 0 or index == 2:

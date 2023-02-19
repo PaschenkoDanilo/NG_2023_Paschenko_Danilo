@@ -1,17 +1,20 @@
 from PIL import Image, ImageDraw
 
 def decoderMain(imgFile, keysFile):
-    img = Image.open(imgFile)
-    draw = ImageDraw.Draw(img)
-    pix = img.load()
+    try:
+        img = Image.open(imgFile)
+        draw = ImageDraw.Draw(img)
+        pix = img.load()
+    except:
+        return "Chosen image file is not an image"
     keys = open(keysFile, "r")
-    keysList = list([key for key in keys])
+    try:
+        keysList = list([key for key in keys])
+    except:
+        return "Chosen keys file has no keys or the keys are corrupted"
     return decoder(pix, keys, keysList)
 
 imgMask = 0b00000011
-
-
-
 indexForRGB = [0, 2, 0, 2]
 
 def decoder(pix, keys, keysList):
@@ -19,7 +22,10 @@ def decoder(pix, keys, keysList):
     index = 0
     while index < len(keysList):
         letter = 0
-        key = tuple(map(lambda x: int(x), keysList[index].translate(str.maketrans('', '', ',' '(' ')' '\n')).split(" ")))
+        try:
+            key = tuple(map(lambda x: int(x), keysList[index].translate(str.maketrans('', '', ',' '(' ')' '\n')).split(" ")))
+        except:
+            return "Chosen keys file has no keys or the keys are corrupted"
         for i in range(0, 4):
             colorCode = pix[key][indexForRGB[i]] & imgMask
             letter <<= 2

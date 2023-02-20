@@ -20,6 +20,9 @@ indexForRGB = [0, 2, 0, 2]
 def encoder(img, draw, pix, keys, text, imageName):
     width = img.size[0]
     height = img.size[1]
+    allPixelsInImage = width * height / 2
+    if allPixelsInImage <= len(text):
+        return "The number of characters in text is greater than the number of pixels in the image"
     index = 0
     while index < len(text):
         letter = ord(text[index])
